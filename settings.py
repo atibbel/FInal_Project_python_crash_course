@@ -1,5 +1,5 @@
-import pickle
-from os.path import exists
+import json
+import os
 from log_in import LogIn
 
 
@@ -23,48 +23,70 @@ class Settings(LogIn):
 
     def __init__(self):
         LogIn.__init__(self)
-        self.account_name = ''
-        self.login_db = []
+        self.file_name = ''  # this will be needed for account deactivation
+        self.name = ''
+        self.login_details = []
 
-    def get_account_name(self):
-        self.login_db = self.load_login_details()
-        index = self.count
-        user_list = self.login_db[index]
-        account_name = [name["Name"] for name in user_list]
-        self.account_name = "".join(account_name)
+    def get_login_list(self):
+        """ calling the list with all the login information"""
+        self.login_details = self.load_login_details()
+        return self.login_details
 
-        return self.account_name
-
-    def view_profile(self):
-        get_name = self.get_account_name()
-        name = get_name.replace(" ", "_")
-        file_name = name + ".txt"
+    def view_profile(self, name):
+        name2 = name.replace(" ", "_")
+        file_name = name2 + ".txt"
+        self.file_name = file_name
         try:
-            read_file = open(file_name, 'r')
+            read_file = open(self.file_name, 'r')
             print(read_file.read())
             read_file.close
             input("\n\nPress enter to continue....")
         except FileNotFoundError:
             print("Oops! File could not be found!")
 
-    # def change_username(self):
-    #     self.login_db = self.load_login_details()
-    #     index = self.count
-    #     print(self.login_db)  # *** TESTING
-    #     new_username = input("Enter your new username: ")
-    #     self.login_db[index][0]['Username'] = new_username  # dict in a list in a list
-    #     print(self.login_db[index])  # *** TESTING
-    #
-    #     try:
-    #         # appending to file
-    #         with open("Login_DB.txt", 'wb') as file:
-    #             # dump information to that file
-    #             pickle.dump(self.login_db, file)
-    #             file.close()
-    #         print(f"Your username has been changed to {new_username}")
-    #
-    #     except FileNotFoundError:
-    #         print(f"New username could not be saved. ")
-    #
-    #     # close file
-    #     file.close()
+    def change_username(self, index_pos):
+        index = index_pos
+        user_data = self.login_details
+        new_username = input("Enter your new username: ")
+        user_data[index]['Username'] = new_username
+
+        print(f"Username has been changed to {new_username}")
+        print(user_data[index])
+        self.save_updated_login_details()
+        return self.login_details
+
+    def change_password(self, index_pos):
+        index = index_pos
+        user_data = self.login_details
+        new_password = input("Enter your new password: ")
+        user_data[index]['Password'] = new_password
+
+        print(f"Password has been changed to {new_password}")
+        print(user_data[index])
+        self.save_updated_login_details()
+        return self.login_details
+
+    def change_pin(self, index_pos):
+        index = index_pos
+        user_data = self.login_details
+        new_pin = input("Enter your new PIN: ")
+        user_data[index]['Pin'] = new_pin
+
+        print(f"Username has been changed to {new_pin}")
+        print(user_data[index])
+        self.save_updated_login_details()
+        return self.login_details
+
+    def save_updated_login_details(self):
+        updated_credentials = self.login_details
+        os.remove('Login_db.txt')
+
+        with open("Login_db.txt", 'w') as file:
+            for dic in updated_credentials:
+                file.write(json.dumps(dic))
+                file.write("\n")
+
+        file.close()
+
+        print("Account login details have been saved")
+

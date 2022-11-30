@@ -23,4 +23,5 @@ statements = ('\nSTATEMENTS'
               '\n============================'
               '\n1- View All Statements'
               '\n2- Monthly Statements'
-              '\n3- Insights')
+              '\n3- Insights'
+              '\n4- Return to User Settings')

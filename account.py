@@ -1,3 +1,4 @@
+import json
 import random
 import secrets
 import string
@@ -20,7 +21,6 @@ class Account:
         self.account_type = ''
         self.account_number = ''
         self.password = ''
-        self.user_login_db = []
 
     def enter_account_info(self):
         """Accepts user info required to create account"""
@@ -54,10 +54,10 @@ class Account:
 
         else:
             new_file = open(file_name + '.txt', 'x')
-        new_file.write(f"\nUSER DETAILS:"
-                       f"\n------------------"
-                       f"{user_info} ")
-        new_file.close()
+            new_file.write(f"\nUSER DETAILS:"
+                           f"\n------------------"
+                           f"{user_info} ")
+            new_file.close()
 
         print(f"\nAccount created..."
               f"\n{user_info}")
@@ -141,20 +141,23 @@ class Account:
         user_name = self.create_username()
         user_password = self.create_password()
         user_pin = self.create_pin()
-        self.user_login_db = [{"Name": f"{self.name}",
-                               "Username": f"{user_name}",
-                               "Password": f"{user_password}",
-                               "Pin": f"{user_pin}"}]
+        credentials = {"Name": f"{self.name}",
+                       "Username": f"{user_name}",
+                       "Password": f"{user_password}",
+                       "Pin": f"{user_pin}"}
 
-        if exists("Login_DB.txt"):
-            with open("Login_DB.txt", 'ab+') as file:
-                # dump information to that file
-                pickle.dump(self.user_login_db, file)
+        if exists("Login_db.txt"):
+
+            with open("Login_db.txt", 'a') as file:
+                # write dictionary into file using json.dumps()
+                file.write(json.dumps(credentials))
+                file.write("\n")
 
         else:
-            with open("Login_DB.txt", "wb") as file:
-                # dump information to that file
-                pickle.dump(self.user_login_db, file)
+            with open("Login_db.txt", "w") as file:
+                # write dictionary into file using json.dumps()
+                file.write(json.dumps(credentials))
+                file.write("\n")
 
         # close file
         file.close()
@@ -164,6 +167,6 @@ class Account:
                       f" ** You will need this information to log in at a later time **"
                       f"\n-------------------"
                       f"\nUSERNAME: {user_name}"
-                      f"\nPIN: {user_pin} "
-                      f"\nPASSWORD: {user_password}")
+                      f"\nPASSWORD: {user_password}"
+                      f"\nPIN: {user_pin} ")
         print(login_info)
