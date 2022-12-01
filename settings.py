@@ -1,5 +1,7 @@
 import json
 import os
+import time
+
 from log_in import LogIn
 
 
@@ -88,5 +90,33 @@ class Settings(LogIn):
 
         file.close()
 
-        print("Account login details have been saved")
+    def deactivate_account(self, index_pos, name_of_file):
+        index = index_pos
+        name = name_of_file
+        user_data = self.login_details
+        delete_account = input("\nThis will permanently delete all files. Would you like to continue? Y/N ").lower()
+        if delete_account == 'y':
+            # replace the blank space between the first and last name with an undescore
+            name2 = name.replace(" ", "_")
+            file_name = name2 + ".txt"
+            # delete users account information
+            os.remove(file_name)
+
+            # removes dictionary from list
+            del user_data[index]
+            self.save_updated_login_details()
+
+            print("Deleting files...")
+            print("Account deleted. Good-bye")
+            time.sleep(1)
+
+        # removes the value but not the whole dictionary
+        # user_data[index]['Name'].pop(0)
+        # user_data[index]['Username'].pop(1)
+        # user_data[index]['Password'].pop(2)
+        # user_data[index]['Pin'].pop(3)
+
+        else:
+            print("Whew, that was a close one...")
+
 

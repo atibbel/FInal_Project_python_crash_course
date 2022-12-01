@@ -2,10 +2,10 @@
 USER DETAILS:
 ------------------
 Name: Nacho Doggo
-Address: 123 pupper lane
+Address: 23 pupper lane
 Date of Birth: 2019/12/16
 Business: Happy Paws
 Incorporation Date: 2019
-Stakeholders/Equities: $250000
+Stakeholders/Equities: $12000
 Account Type: Medium Business Class
-Account Number: 86076067-HA 
+Account Number: 18156651-HA 

@@ -2,10 +2,10 @@
 USER DETAILS:
 ------------------
 Name: Kitty Cats
-Address: 45 meow meow
-Date of Birth: 2015/02/15
+Address: 123 meow street
+Date of Birth: 2015/05/18
 Business: Prrrfect Paws
-Incorporation Date: 2018
-Stakeholders/Equities: $12000
-Account Type: Small Business Class
-Account Number: 40256529-PR 
+Incorporation Date: 2019
+Stakeholders/Equities: $5200000
+Account Type: Large Business Class
+Account Number: 17073128-PR 

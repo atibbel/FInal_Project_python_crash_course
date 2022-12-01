@@ -34,12 +34,15 @@ class LogIn(Account):
         """ find the index of the dictionary that the user detail are in. """
         index = 0
         user_data = self.load_login_details()
-        for dic in user_data[index]:
-            # if inputted username matches username at this index, then we found the correct index location
-            if user_data[index]['Username'] == username:
-                break
-            else:
-                index += 1
+        try:
+            for dic in user_data[index]:
+                # if inputted username matches username at this index, then we found the correct index location
+                if user_data[index]['Username'] == username:
+                    break
+                else:
+                    index += 1
+        except IndexError:
+            print('\n\nUser does not exist.')
         # index is saved
         self.index = index
         return self.index
@@ -49,14 +52,18 @@ class LogIn(Account):
         user_data = self.user_login_db
         # retrieve the found index
         index = self.index
-        # if username in dictionary equals inputted username
-        if user_data[index]['Username'] == username:
-            print("\nValid username")
-            is_valid = True
-        else:
-            print("Invalid username")
+        is_valid = False
+        try:
+            # if username in dictionary equals inputted username
+            if user_data[index]['Username'] == username:
+                print("\nValid username")
+                is_valid = True
+            else:
+                print("Invalid username")
 
-            is_valid = False
+                is_valid = False
+        except IndexError:
+            print()
 
         return is_valid
 
@@ -64,28 +71,35 @@ class LogIn(Account):
         """ verifies pin entered matches the pin in the list at the index of a specific user """
         user_data = self.user_login_db
         index = self.index
-        if user_data[index]['Pin'] == pin:
-            print("Valid pin")
-            is_valid = True
-        else:
-            print("Invalid pin")
+        is_valid = False
+        try:
+            if user_data[index]['Pin'] == pin:
+                print("Valid pin")
+                is_valid = True
+            else:
+                print("Invalid pin")
 
-            is_valid = False
-
+                is_valid = False
+        except IndexError:
+            print()
         return is_valid
 
     def verify_password(self, password):
         """ verifies password entered matches the password in the list at the index of a specific user """
         user_data = self.user_login_db
         index = self.index
-        # for dic in user_data[index]:
-        if user_data[index]['Password'] == password:
-            print("Valid password")
-            is_valid = True
-        else:
-            print("Invalid password")
+        is_valid = False
+        try:
+            # for dic in user_data[index]:
+            if user_data[index]['Password'] == password:
+                print("Valid password")
+                is_valid = True
+            else:
+                print("Invalid password")
 
-            is_valid = False
+                is_valid = False
+        except IndexError:
+            print()
         return is_valid
 
     def verify_login(self, username, pin, password):

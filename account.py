@@ -61,11 +61,11 @@ class Account:
                            f"{user_info} ")
             new_file.close()
 
-        # displays the users account information
-        print(f"\nAccount created..."
-              f"\n{user_info}")
+            # displays the users account information
+            print(f"\nAccount created..."
+                  f"\n{user_info}")
 
-        self.save_login_details()
+            self.save_login_details()
 
     def set_account_type(self):
         """ Returns business account type"""
@@ -125,12 +125,18 @@ class Account:
 
     def create_username(self):
         """ Creates a username """
-        # split the username into a list.
-        name = self.name.split()
-        first_name = name[0]
-        last_name = name[1]
-        # take the first character from the first name and the first 4 from the last name to create a username
-        username = first_name[0] + last_name[0:4]
+        try:
+            # split the username into a list
+            name = self.name.split()
+            first_name = name[0]
+            last_name = name[1]
+            # take the first character from the first name and the first 4 from the last name to create a username
+            username = first_name[0] + last_name[0:4]
+        except IndexError:
+            # this exception runs when no last name was given
+            name = self.name.split()
+            first_name = name[0]
+            username = first_name[0] + "user"
 
         return "".join(username).lower()
 
