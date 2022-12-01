@@ -3,7 +3,6 @@ import random
 import secrets
 import string
 from os.path import exists
-import pickle
 
 
 class Account:
@@ -34,6 +33,7 @@ class Account:
 
     def create_account(self):
         """ Saves and displays account information. Log in information is displayed, so they may later log in"""
+        # call function to gather user input for account creation 
         self.enter_account_info()
 
         user_info = (f"\nName: {self.name}"
@@ -46,6 +46,7 @@ class Account:
                      f"\nAccount Number: {self.create_account_number(self.business_initials())}")
 
         file_name = f"{self.name.replace(' ', '_')}"
+        # if the file exists, user will be informed account exists & will be prompted to login
         if exists(file_name + ".txt"):
             sign_in = input("\nAccount already exists. Would you like to log in? ").lower()
             if sign_in == "y":
@@ -53,12 +54,14 @@ class Account:
                 print("opening log in window.....")
 
         else:
+            # if the file does not exist, create file specific to the user and write data.
             new_file = open(file_name + '.txt', 'x')
             new_file.write(f"\nUSER DETAILS:"
                            f"\n------------------"
                            f"{user_info} ")
             new_file.close()
 
+        # displays the users account information
         print(f"\nAccount created..."
               f"\n{user_info}")
 
@@ -89,10 +92,13 @@ class Account:
     def create_account_number(self, business_initials):
         """Create a random 8-digit account number ending in the first two letters of the business name"""
         new_account_number = ''
+        # loops 8 times to generate 8 random digits
         for num in range(8):
             random_account_number = secrets.choice(string.digits)
+            # adds the random digit to new_account_number string
             new_account_number += random_account_number
 
+        # joins the business initials to the end of the account number
         self.account_number = "".join(new_account_number) + "-" + business_initials.upper()
         return self.account_number
 
@@ -102,13 +108,16 @@ class Account:
         for letter in range(2):
             initials_list.append(self.business_name[letter])
 
+        # join the two letters from the list, into a string
         return ''.join(initials_list)
 
     def create_pin(self):
         """creates a random 4-digit pin"""
         new_pin = ''
+        # loop 4 times to generate 4 random digits
         for char in range(4):
             random_pin = secrets.choice(string.digits)
+            # add the random digit to a string each loop
             new_pin += random_pin
 
         self.pin = new_pin
@@ -116,9 +125,11 @@ class Account:
 
     def create_username(self):
         """ Creates a username """
+        # split the username into a list.
         name = self.name.split()
         first_name = name[0]
         last_name = name[1]
+        # take the first character from the first name and the first 4 from the last name to create a username
         username = first_name[0] + last_name[0:4]
 
         return "".join(username).lower()
@@ -126,18 +137,23 @@ class Account:
     def create_password(self):
         """ Generates a secure 7 character password"""
         punctuation = ["!", "@", "#", "&", "*"]
+        # instantiate a new list to save our random characters
         new_password = []
+        # loops 2 times to get 2 random digit, 2 uppercase letters and 2 lowercase letters
         for char in range(2):
             num = secrets.choice(string.digits) + secrets.choice(string.ascii_uppercase) + \
                   secrets.choice(string.ascii_lowercase)
             new_password.append(num)
+        # adds a random symbol to the list
         new_password += random.choice(punctuation)
+        # the 7 characters are randomly shuffled for a unique password
         random.shuffle(new_password)
 
         self.password = "".join(new_password)
         return self.password
 
     def save_login_details(self):
+        """ When a new account is created the login information is saved to a separate list of dictionaries """
         user_name = self.create_username()
         user_password = self.create_password()
         user_pin = self.create_pin()
@@ -147,7 +163,7 @@ class Account:
                        "Pin": f"{user_pin}"}
 
         if exists("Login_db.txt"):
-
+            # if the file already exists, the new data will be appended to the file
             with open("Login_db.txt", 'a') as file:
                 # write dictionary into file using json.dumps()
                 file.write(json.dumps(credentials))
@@ -161,10 +177,10 @@ class Account:
 
         # close file
         file.close()
-
+        # message displayed with login information for the new user
         login_info = (f"\n"
                       f"\nLOG-IN INFORMATION:"
-                      f" ** You will need this information to log in at a later time **"
+                      f"\n ** You will need this information to log in at a later time **"
                       f"\n-------------------"
                       f"\nUSERNAME: {user_name}"
                       f"\nPASSWORD: {user_password}"

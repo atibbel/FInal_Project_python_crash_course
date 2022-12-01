@@ -4,6 +4,7 @@ from log_in import LogIn
 import menu_options as menu
 from settings import Settings
 
+# loop flag.
 run_program = True
 
 while run_program:
@@ -26,6 +27,7 @@ while run_program:
         password = input("Please enter your password: ")
         login.get_index(name)
 
+        # if login information is correct
         if login.verify_login(name, pin, password):
             print("\nLogging in ...\n")
             login.welcome_user()
@@ -34,6 +36,7 @@ while run_program:
                 print(menu.account_options)
                 option = input("\nPlease choose an option from the Account Option menu above: \n")
 
+                # for dev purposes only. to help with testing
                 if option == '0':  # TESTING
                     pass
 
@@ -68,6 +71,7 @@ while run_program:
                             # exit settings menu
                             in_settings_menu = False
 
+                # Statements Menu
                 elif option == '2':
                     print(menu.statements)
                     option = input("\nPlease choose an option from the Statements menu above: \n")
@@ -77,9 +81,12 @@ while run_program:
                     #       2- Monthly Statements'
                     #       3- Insights
                     #       4 - exit
+
+                # log out/ return to main menu
                 else:
                     logged_in = False
-                    #run_program = False
+
+        # if login credentials are invalid
         else:
 
             print("\nInvalid credentials.")
@@ -101,9 +108,6 @@ while run_program:
     # dev option to view the log_in details, for testing purposes
     elif menu_choice == "4":
         print(login.load_login_details())
-
-    elif menu_choice == "5":  # for testing purposes
-        pass
 
     # If not valid option
     else:

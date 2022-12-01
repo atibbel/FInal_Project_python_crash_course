@@ -5,21 +5,8 @@ from log_in import LogIn
 
 class Settings(LogIn):
 
-    """Settings – View profile User should be able to view their profile
-        with all the information given during profile creation.
-
-        Settings - Change username Current users should be able to change
-        their usernames in the settings section.
-
-        Settings - Change password Current users should be able to change
-        their password in the settings section.
-
-        Settings - Change PIN Current users should be able to change
-        their PIN in the settings section.
-
-        Settings – Deactivate account Current users should be able to
-        deactivate their account and their
-        information deleted."""
+    # TODO: Deactivate account - Current users should be able
+    #  to deactivate their account and their information deleted.
 
     def __init__(self):
         LogIn.__init__(self)
@@ -28,11 +15,14 @@ class Settings(LogIn):
         self.login_details = []
 
     def get_login_list(self):
-        """ calling the list with all the login information"""
+        """ loading an empty list with the login information"""
         self.login_details = self.load_login_details()
         return self.login_details
 
     def view_profile(self, name):
+        """ create filename from account name then read file for user to view"""
+
+        # replace the blank space between the first and last name with an undescore
         name2 = name.replace(" ", "_")
         file_name = name2 + ".txt"
         self.file_name = file_name
@@ -44,7 +34,10 @@ class Settings(LogIn):
         except FileNotFoundError:
             print("Oops! File could not be found!")
 
+        return self.file_name
+
     def change_username(self, index_pos):
+        """ finds users current username and replaces it with new username"""
         index = index_pos
         user_data = self.login_details
         new_username = input("Enter your new username: ")
@@ -52,10 +45,12 @@ class Settings(LogIn):
 
         print(f"Username has been changed to {new_username}")
         print(user_data[index])
+        # saves changed username info into login_db file
         self.save_updated_login_details()
         return self.login_details
 
     def change_password(self, index_pos):
+        """ finds users current password and replaces it with new password. Then saves the new info"""
         index = index_pos
         user_data = self.login_details
         new_password = input("Enter your new password: ")
@@ -67,6 +62,7 @@ class Settings(LogIn):
         return self.login_details
 
     def change_pin(self, index_pos):
+        """ finds users current pin and replaces it with new password. Then saves the new info"""
         index = index_pos
         user_data = self.login_details
         new_pin = input("Enter your new PIN: ")
@@ -78,10 +74,14 @@ class Settings(LogIn):
         return self.login_details
 
     def save_updated_login_details(self):
+        """ replaces old file with updated user login information"""
         updated_credentials = self.login_details
+        # delete old file
         os.remove('Login_db.txt')
 
+        # Write updated info to newly created file.
         with open("Login_db.txt", 'w') as file:
+            # loop through the current login_details list to load each entry on a new line
             for dic in updated_credentials:
                 file.write(json.dumps(dic))
                 file.write("\n")
